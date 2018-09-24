@@ -23,16 +23,15 @@ import model.objects.Vehicle;
 public class ReportsDialog extends JDialog 
 							implements Observer{
 
-	protected static final char TECLALIMPIAR = 'c';
+	protected static final char CLEAR_KEY = 'c';
 	private ButtonsReportsDialog buttonsReportsDialog;
-	private SimulationObjectPanel<Vehicle> panelVehiculos;
-	private SimulationObjectPanel<Road> panelCarreteras;
-	private SimulationObjectPanel<GenericJunction<?>> panelCruces;
+	private SimulationObjectPanel<Vehicle> vehiclesPanel;
+	private SimulationObjectPanel<Road> roadPanel;
+	private SimulationObjectPanel<GenericJunction<?>> junctionPanel;
 
-	// Un Jdialog es como un frame al que se le pueden añadir paneles
 	public ReportsDialog(MainView mainWindow, Controller controller) {
 		
-		this.setTitle("Generar Informes");
+		this.setTitle("Generate Reports");
 		controller.addObserver(this);
 		initGUI(mainWindow);
 	}
@@ -41,119 +40,107 @@ public class ReportsDialog extends JDialog
 	//----------------------------------------------------------------------------------
 	private void initGUI(MainView mainWindow) {
 		
-		// CREO PANEL PRINCIPAL
-		JPanel panelPrincipal = new JPanel(new BorderLayout());
-		this.add(panelPrincipal);
+		// PRINCIPAL PANEL
+		JPanel principalPanel = new JPanel(new BorderLayout());
+		this.add(principalPanel);
 		
-		// CREO PPANEL SUPERIOR
-		JPanel panelSuperior = new JPanel();
-		panelSuperior.setLayout(new BoxLayout(panelSuperior, BoxLayout.Y_AXIS));
+		// SUPERIOR PANEL
+		JPanel superiorPanel = new JPanel();
+		superiorPanel.setLayout(new BoxLayout(superiorPanel, BoxLayout.Y_AXIS));
 		
-		// Texto inicial
-		JLabel textoInicial1 = new JLabel();
-		JLabel textoInicial2 = new JLabel();
-		JLabel textoInicial3 = new JLabel();
+		// INICIAL TEXT
+		JLabel sentence1 = new JLabel();
+		JLabel sentence2 = new JLabel();
+		JLabel sentence3 = new JLabel();
 		
-		textoInicial1.setText("Selecciona objetos para generar Informes." + "\n" );
-		textoInicial2.setText("Usa 'c' para deseleccionar todos." + "\n" );
-		textoInicial3.setText("Usa Ctrl + A para seleccionar todos. ");
+		sentence1.setText("Select the different objects to generate reports" + "\n" );
+		sentence2.setText("Use 'c' to clear all." + "\n" );
+		sentence3.setText("Use Ctrl + A to select all. ");
 						
-		// Añado el texto al panel superior
-		panelSuperior.add(textoInicial1);
-		panelSuperior.add(textoInicial2);
-		panelSuperior.add(textoInicial3);
+		// ADDS THE TEXT
+		superiorPanel.add(sentence1);
+		superiorPanel.add(sentence2);
+		superiorPanel.add(sentence3);
 		
-		// Genera Espacio ( Separacion entre componentes )
-		panelSuperior.add(Box.createRigidArea(new Dimension(0,20)));
+		// GENERATE SPACE
+		superiorPanel.add(Box.createRigidArea(new Dimension(0,20)));
 
-		// Añado el panel superior al principal
-		panelPrincipal.add(panelSuperior,BorderLayout.PAGE_START);
+		// ADDS SUPERIOR PANEL
+		principalPanel.add(superiorPanel,BorderLayout.PAGE_START);
 		
-		// CREO PANEL CENTRAL
-		JPanel panelCentral = new JPanel();
-		panelCentral.setLayout(new BoxLayout(panelCentral, BoxLayout.X_AXIS));
+		// CENTRAL PANEL
+		JPanel centralPanel = new JPanel();
+		centralPanel.setLayout(new BoxLayout(centralPanel, BoxLayout.X_AXIS));
 		
-		// Creo objetos del panel central ( 3 paneles con 1 lista por panel )
-		// argumento es el titulo de la lista
-		this.panelVehiculos = new SimulationObjectPanel<Vehicle>("Vehiculos"); 
-		this.panelCarreteras = new SimulationObjectPanel<Road>("Carreteras");
-		this.panelCruces = new SimulationObjectPanel<GenericJunction<?>>("Cruces");
+		// CREATE OBJECTS
+		this.vehiclesPanel = new SimulationObjectPanel<Vehicle>("Vehicles"); 
+		this.roadPanel = new SimulationObjectPanel<Road>("Roads");
+		this.junctionPanel = new SimulationObjectPanel<GenericJunction<?>>("Junctions");
 		
+		centralPanel.add(vehiclesPanel);
+		centralPanel.add(roadPanel);
+		centralPanel.add(junctionPanel);
 
-		// Los añado al panel central
-		panelCentral.add(panelVehiculos);
-		panelCentral.add(panelCarreteras);
-		panelCentral.add(panelCruces);
+		principalPanel.add(centralPanel, BorderLayout.CENTER);
 
-		// Añado el panel central al principal
-		panelPrincipal.add(panelCentral, BorderLayout.CENTER);
-
-		// Creo el panel de botones y lo añado al panel principal
+		// CREATE BUTTONS PANEL
 		this.buttonsReportsDialog = new ButtonsReportsDialog(this, mainWindow);
-		panelPrincipal.add(buttonsReportsDialog, BorderLayout.PAGE_END);
+		principalPanel.add(buttonsReportsDialog, BorderLayout.PAGE_END);
 		
 		this.setDefaultCloseOperation(HIDE_ON_CLOSE);
 		this.pack();
 		
 	}
 	
-	// METODOS
-	//-----------------------------------------------------------------------------
-	
-	// Voy jugando con el setVisible del dialog para ocultarlo o mostrarlo
-	
-	// Hace visible el Jdialog
-	public void mostrar() {
+	public void showDialog() {
 		this.setVisible(true);
 	}
 	
-	// Oculta el Jdialog
-	public void ocultar() {
+	
+	public void hideDialog() {
 		this.setVisible(false);
 	}
 
-	// Coloca cada lista del mapa en la lista del Jdialog
-	private void setMapa(RoadMap mapa) {
-		this.panelVehiculos.setList(mapa.getVehicles());
-		this.panelCarreteras.setList(mapa.getRoads());
-		this.panelCruces.setList(mapa.getJunctions());
+	// Set the map(vehicles,roads,junction) into the dialog
+	private void setMap(RoadMap mapa) {
+		this.vehiclesPanel.setList(mapa.getVehicles());
+		this.roadPanel.setList(mapa.getRoads());
+		this.junctionPanel.setList(mapa.getJunctions());
 	}
 
-	// Devuelve los elementos seleccionados de cada lista
 	public List<Vehicle> getSelectedVehicles() {
-		return this.panelVehiculos.getSelectedItems();
+		return this.vehiclesPanel.getSelectedItems();
 	}
 
 	public List<Road> getSelectedRoads() {
-		return this.panelCarreteras.getSelectedItems();
+		return this.roadPanel.getSelectedItems();
 	}
 
 	public List<GenericJunction<?>> getSelectedJunctions() {
-		return this.panelCruces.getSelectedItems();
+		return this.junctionPanel.getSelectedItems();
 	}
 	
-	// OBSERVADORES
+	// OBSERVERS
 	// -----------------------------------------------------------------------------
-
 	@Override
 	public void simulatorError(int tiempo, RoadMap map,
 			List<Event> events, SimulationError e) {}
 
 	@Override
 	public void advance(int tiempo, RoadMap mapa, List<Event> events) {
-		this.setMapa(mapa);
+		this.setMap(mapa);
 
 	}
 
 	@Override
 	public void addEvent(int tiempo, RoadMap mapa, List<Event> events) {
-		this.setMapa(mapa);
+		this.setMap(mapa);
 
 	}
 
 	@Override
 	public void reset(int tiempo, RoadMap mapa, List<Event> events) {
-		this.setMapa(mapa);
+		this.setMap(mapa);
 
 	}
 

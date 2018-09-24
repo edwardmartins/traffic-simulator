@@ -1,9 +1,7 @@
 package view;
 
 import java.util.List;
-
 import javax.swing.SwingUtilities;
-
 import control.Controller;
 import control.Observer;
 import events.Event;
@@ -15,41 +13,41 @@ public class ReportsPanel extends TextAreaPanel
 						   implements Observer {
 	
 
-	public ReportsPanel(String titulo, boolean editable, Controller ctrl) {
+	public ReportsPanel(String title, boolean editable, Controller ctrl) {
 		
-		super(titulo, editable);
+		super(title, editable);
 		ctrl.addObserver(this);
 	}
 
-	// Observadores
+	// OBSERVERS
 	// ----------------------------------------------------------------------------
 	@Override
-	public void simulatorError(int tiempo, RoadMap map,
+	public void simulatorError(int time, RoadMap map,
 			List<Event> events, SimulationError e) { }
 
 	@Override
-	public void advance(int tiempo, RoadMap mapa,
+	public void advance(int time, RoadMap map,
 			List<Event> events) {
 		SwingUtilities.invokeLater(new Runnable() {
 			
 			@Override
 			public void run() {
 				
-				textArea.append(mapa.generateReport(tiempo));
+				textArea.append(map.generateReport(time));
 			}
 		});
 		
 	}
 
 	@Override
-	public void addEvent(int tiempo, RoadMap mapa,
+	public void addEvent(int time, RoadMap map,
 			List<Event> events) { }
 
 	@Override
-	public void reset(int tiempo, RoadMap mapa,
+	public void reset(int time, RoadMap mapa,
 			List<Event> events) {
 	
-		this.limpiarAreaDeTexto();
+		this.clearTextArea();
 	}
 
 }

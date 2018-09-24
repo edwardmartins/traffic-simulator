@@ -17,18 +17,18 @@ public class MyPopUpMenu extends JPopupMenu {
 	public MyPopUpMenu(MainView mainWindow) {
 
 		super(); // JPopupMenu = new JPopUp menu()
-		creaOPcionesPLantillas(mainWindow);
-		creaOpcionesEventos(mainWindow);
+		createTemplateOptions(mainWindow);
+		createEventsOptions(mainWindow);
 	}
 
-	// OPCIONES EVENTOS
+	// EVENTS OPTIONS
 	// ----------------------------------------------------------------
-	public void creaOpcionesEventos(MainView mainWindow) {
+	public void createEventsOptions(MainView mainWindow) {
 
-		// CARGAR EVENTOS
-		JMenuItem cargar = new JMenuItem("Cargar");
+		// LOAD EVENTS
+		JMenuItem load = new JMenuItem("Load");
 
-		cargar.addActionListener(new ActionListener() {
+		load.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 
@@ -37,17 +37,17 @@ public class MyPopUpMenu extends JPopupMenu {
 			}
 		});
 
-		this.add(cargar);
+		this.add(load);
 		this.addSeparator();
 
-		// SALVAR EVENTOS
-		JMenuItem salvar = new JMenuItem("Salvar");
+		// SAVE EVENTS
+		JMenuItem salvar = new JMenuItem("Save");
 
 		salvar.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 
-				mainWindow.salvaEventos();
+				mainWindow.saveEvents();
 
 			}
 		});
@@ -55,14 +55,14 @@ public class MyPopUpMenu extends JPopupMenu {
 		this.add(salvar);
 		this.addSeparator();
 
-		// LIMPIAR EVENTOS
-		JMenuItem limpiar = new JMenuItem("Limpiar");
+		// CLEAR EVENTS
+		JMenuItem limpiar = new JMenuItem("Clear");
 		limpiar.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
 
-				mainWindow.clearAreaEventos();
+				mainWindow.clearEventsArea();
 
 			}
 		});
@@ -71,33 +71,29 @@ public class MyPopUpMenu extends JPopupMenu {
 
 	}
 
-	// PLANTILLAS
+	// TEMPLATES
 	// ---------------------------------------------------------------------------
-	public void creaOPcionesPLantillas(MainView mainWindow) {
+	public void createTemplateOptions(MainView mainWindow) {
 		
-		JMenu plantillas = new JMenu("Nueva plantilla");
-		this.add(plantillas);
-		plantillas.setPreferredSize(new Dimension(150, 20));
-		
-		// Recorre los constructores de eventos imprimiendo 
-		// su nombre para ponerlos como opcion en el menu Nueva Plantilla
-		// Parser Eventos devuelve el array de constructores
+		JMenu templates = new JMenu("New Template");
+		this.add(templates);
+		templates.setPreferredSize(new Dimension(150, 20));
 		
 		for (EventsConstructor ce : EventsParser.getEventsConstructorArray()) {
 			
 			 JMenuItem mi = new JMenuItem(ce.toString());
 			 
 			 mi.addActionListener(new ActionListener() {
-				 // Inserta cada plantilla en el editor de eventos + salto de linea
+			
 				 @Override
 				 public void actionPerformed(ActionEvent e) {
-					 mainWindow.insertaEnEditorEventos(ce.template()
+					 mainWindow.insertInEventsEditor(ce.template()
 							 				+ System.lineSeparator());
 				 }
 				 
 			});
 			 
-			plantillas.add(mi);	
+			templates.add(mi);	
 		}
 		this.addSeparator();
 	}

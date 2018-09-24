@@ -13,37 +13,37 @@ import model.objects.Vehicle;
 @SuppressWarnings("serial")
 public class VehiclesTableModel extends TableModel<Vehicle> {
 
-	public VehiclesTableModel(String[] columnIdEventos, Controller ctrl) {
-		super(columnIdEventos, ctrl);
+	public VehiclesTableModel(String[] columnIdEvents, Controller ctrl) {
+		super(columnIdEvents, ctrl);
 			
 		
 	}
 
-	// Necesario para que se visualicen los datos
+	// Necesariy to visualize data
 	// -------------------------------------------------------
-	public Object getValueAt(int indiceFil, int indiceCol) {
+	public Object getValueAt(int rowIndex, int colIndex) {
 		Object s = null;
-		switch (indiceCol) {
+		switch (colIndex) {
 		case 0:
-			s = this.list.get(indiceFil).getId();
+			s = this.list.get(rowIndex).getId();
 			break;
 		case 1:
-			s = this.list.get(indiceFil).getRoad();
+			s = this.list.get(rowIndex).getRoad();
 			break;
 		case 2:
-			s = this.list.get(indiceFil).getLocation();
+			s = this.list.get(rowIndex).getLocation();
 			break;
 		case 3:
-			s = this.list.get(indiceFil).getCurrentSpeed();
+			s = this.list.get(rowIndex).getCurrentSpeed();
 			break;
 		case 4:
-			s = this.list.get(indiceFil).getKilometrage();
+			s = this.list.get(rowIndex).getKilometrage();
 			break;
 		case 5:
-			s = this.list.get(indiceFil).getBreakDownDuration();
+			s = this.list.get(rowIndex).getBreakDownDuration();
 			break;
 		case 6:
-			s = this.list.get(indiceFil).getItinerary();
+			s = this.list.get(rowIndex).getItinerary();
 			break;
 			// default
 		default: assert (false);
@@ -51,20 +51,20 @@ public class VehiclesTableModel extends TableModel<Vehicle> {
 		return s;
 	}
 
-	// Observadores
+	// Observers
 	// ----------------------------------------------------------------------------
 	@Override
-	public void simulatorError(int tiempo, RoadMap map, List<Event> events, 
+	public void simulatorError(int time, RoadMap map, List<Event> events, 
 			SimulationError e) {}
 
 	@Override
-	public void advance(int tiempo, RoadMap mapa, List<Event> events) {
+	public void advance(int time, RoadMap map, List<Event> events) {
 		
 		SwingUtilities.invokeLater(new Runnable() {
 			
 			@Override
 			public void run() {
-				list = mapa.getVehicles(); // devuelve la lista de vehiculos
+				list = map.getVehicles(); 
 				fireTableStructureChanged();
 			}
 		});
@@ -72,11 +72,11 @@ public class VehiclesTableModel extends TableModel<Vehicle> {
 	}
 
 	@Override
-	public void addEvent(int tiempo, RoadMap mapa, List<Event> events) {}
+	public void addEvent(int time, RoadMap map, List<Event> events) {}
 
 	@Override
-	public void reset(int tiempo, RoadMap mapa, List<Event> events) {
-		this.list = mapa.getVehicles(); 
+	public void reset(int time, RoadMap map, List<Event> events) {
+		this.list = map.getVehicles(); 
 		this.fireTableStructureChanged();
 	}
 

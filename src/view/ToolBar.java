@@ -30,57 +30,57 @@ public class ToolBar extends JToolBar
 					 implements Observer{
 
 	
-	private JSpinner pasos; // pasos que debera dar el simulador
-	private JTextField time; // tiempo en el que va la simulacion
+	private JSpinner simulatorSteps; 
+	private JTextField time; 
 	private JSpinner delay;
 	
 	
-	private List<JComponent> listaComponentes;
+	private List<JComponent> componentsList;
 	
 	public ToolBar(MainView mainWindow, Controller controller) {
 		super(); // = new ToolBar();
 		
 		controller.addObserver(this);
-		listaComponentes = new ArrayList<JComponent>();
+		componentsList = new ArrayList<JComponent>();
 		
-		IconoCargarArchivo(mainWindow);
-		IconoGuardarArchivo(mainWindow);
-		IconoLimpiarEventos(mainWindow);
+		loadFileIcon(mainWindow);
+		saveFileIcon(mainWindow);
+		clearEventsIcon(mainWindow);
 		this.addSeparator();
 		
-		IconoCargarEventos(mainWindow, controller);
-		IconoEjecutarSimulador(mainWindow);
-		IconoDetenerSimulador(mainWindow);
-		IconoReiniciarSimulador(controller);
+		loadEventsIntoSimulatorIcon(mainWindow, controller);
+		executeSimulatorIcon(mainWindow);
+		stopSimulatorIcon(mainWindow);
+		resetSimulatorIcon(controller);
 		this.addSeparator();
 		
 		SpinnerDelay();
 		this.addSeparator();
 		
-		SpinnerPasosAEjecutar();
+		simulatorStepsSpinner();
 		this.addSeparator();
 		
-		TextFieldTiempo();
+		textFieldTime();
 		this.addSeparator();
 		
-		IconoGenerarInformes(mainWindow);
-		IconoLimpiarInformes(mainWindow);
-		IconoGuardarInformes(mainWindow);
+		generateReportsIcon(mainWindow);
+		clearReportsIcon(mainWindow);
+		saveReportsIcon(mainWindow);
 		this.addSeparator();
 		
-		IconoSalir(mainWindow);
+		exitIcon(mainWindow);
 	}
 	
-	// ICONO CARGAR ARCHIVO DE TEXTO
+	// LOAD FILE ICON
 	//------------------------------------------------------------------------------
-	private void IconoCargarArchivo(MainView mainWindow) {
+	private void loadFileIcon(MainView mainWindow) {
 		
-		JButton botonCargarTexto = new JButton();
-		botonCargarTexto.setToolTipText("Loads an events file");
-		botonCargarTexto.setIcon(new ImageIcon(
+		JButton loadFileButton = new JButton();
+		loadFileButton.setToolTipText("Loads an events file");
+		loadFileButton.setIcon(new ImageIcon(
 								 Images.loadImage("resources/icons/open.png")));
 		
-		botonCargarTexto.addActionListener(new ActionListener() {
+		loadFileButton.addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -89,77 +89,76 @@ public class ToolBar extends JToolBar
 			}
 		});
 		
-		this.add(botonCargarTexto);
-		listaComponentes.add(botonCargarTexto);
+		this.add(loadFileButton);
+		componentsList.add(loadFileButton);
 	}
 	
 	
-	// ICONO GUARDAR ARCHIVO DE TEXTO
+	// SAVE FILE ICON
 	//------------------------------------------------------------------------------
-	private void IconoGuardarArchivo(MainView mainWindow) {
+	private void saveFileIcon(MainView mainWindow) {
 		
-		JButton botonGuardarEventos = new JButton();
-		botonGuardarEventos.setToolTipText("Save events");
-		botonGuardarEventos.setIcon(new ImageIcon(
+		JButton saveFileButton = new JButton();
+		saveFileButton.setToolTipText("Save an events file");
+		saveFileButton.setIcon(new ImageIcon(
 							 Images.loadImage("resources/icons/save.png")));
 		
-		botonGuardarEventos.addActionListener(new ActionListener() {
+		saveFileButton.addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				
-				mainWindow.salvaEventos();
+				mainWindow.saveEvents();
 			}
 		});
 		
-		this.add(botonGuardarEventos);
-		listaComponentes.add(botonGuardarEventos);
+		this.add(saveFileButton);
+		componentsList.add(saveFileButton);
 	}
 	
-	// ICONO LIMPIAR EDITOR DE TEXTO
+	// CLEAR EVENTS ICON
 	//------------------------------------------------------------------------------ 
-	private void IconoLimpiarEventos(MainView mainWindow) {
+	private void clearEventsIcon(MainView mainWindow) {
 		
-		JButton botonLimpiarEventos = new JButton();
-		botonLimpiarEventos.setToolTipText("Clear the events editor");
-		botonLimpiarEventos.setIcon(new ImageIcon(
+		JButton clearEventsButton = new JButton();
+		clearEventsButton.setToolTipText("Clear events");
+		clearEventsButton.setIcon(new ImageIcon(
 							 Images.loadImage("resources/icons/clear.png")));
 		
-		botonLimpiarEventos.addActionListener(new ActionListener() {
+		clearEventsButton.addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				
-				mainWindow.clearAreaEventos();
+				mainWindow.clearEventsArea();
 				
 			}
 		});
 		
-		this.add(botonLimpiarEventos);
-		listaComponentes.add(botonLimpiarEventos);
+		this.add(clearEventsButton);
+		componentsList.add(clearEventsButton);
 	}
 	
 	
-	// ICONO CARGAR LOS EVENTOS AL SIMULADOR
+	// LOAD EVENTS INTO SIMULATOR ICON
 	//------------------------------------------------------------------------------
-	private void IconoCargarEventos(MainView mainWindow,
+	private void loadEventsIntoSimulatorIcon(MainView mainWindow,
 										 Controller controller) {
 		
-		JButton botonCargarEventos = new JButton();
-		botonCargarEventos.setToolTipText("Load the events into the simulator");
-		botonCargarEventos.setIcon(new ImageIcon(
+		JButton loadEventsIcon = new JButton();
+		loadEventsIcon.setToolTipText("Load events into the simulator");
+		loadEventsIcon.setIcon(new ImageIcon(
 				                   Images.loadImage("resources/icons/events.png")));
 		
-		botonCargarEventos.addActionListener(new ActionListener() {
+		loadEventsIcon.addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				
 				try {
-					 // Se reinicia el simulador cada vez que se cargan los eventos
 					 controller.reset();
-					 byte[] contenido = mainWindow.getTextoEditorEventos().getBytes();
-					 controller.loadEvents(new ByteArrayInputStream(contenido));
+					 byte[] content = mainWindow.getEventsEditorText().getBytes();
+					 controller.loadEvents(new ByteArrayInputStream(content));
 					 
 			} catch (SimulationError err) { }
 				
@@ -167,44 +166,44 @@ public class ToolBar extends JToolBar
 		}
 		
 		});
-		this.add(botonCargarEventos);
-		listaComponentes.add(botonCargarEventos);
+		this.add(loadEventsIcon);
+		componentsList.add(loadEventsIcon);
 		
 	}
 	
-	// ICONO EJECUTAR EL SIMULADOR
+	// EXECUTE SIMULATOR ICON
 	//------------------------------------------------------------------------------
 	
-	private void IconoEjecutarSimulador(MainView mainWindow) {
+	private void executeSimulatorIcon(MainView mainWindow) {
 		
-		JButton botonEjecutar = new JButton();
-		botonEjecutar.setToolTipText("Execute the simulator");
-		botonEjecutar.setIcon(new ImageIcon(
+		JButton executeButton = new JButton();
+		executeButton.setToolTipText("Execute the simulator");
+		executeButton.setIcon(new ImageIcon(
 								  Images.loadImage("resources/icons/play.png")));
 		
 		
 		
-		botonEjecutar.addActionListener(new ActionListener() {
+		executeButton.addActionListener(new ActionListener() {
 	
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				mainWindow.ejecutarSimulador();
 			}		
 		});
-		this.add(botonEjecutar);
-		listaComponentes.add(botonEjecutar);
+		this.add(executeButton);
+		componentsList.add(executeButton);
 	}
 	
-	// ICONO PARA DETENER EL SIMULADOR
+	// STOP SIMULATOR ICON
 	//------------------------------------------------------------------------------
-	private void IconoDetenerSimulador(MainView mainWindow) {
+	private void stopSimulatorIcon(MainView mainWindow) {
 		
-		JButton botonDetener= new JButton();
-		botonDetener.setToolTipText("Stops the simulator");
-		botonDetener.setIcon(new ImageIcon(
+		JButton stopButton= new JButton();
+		stopButton.setToolTipText("Stops the simulator");
+		stopButton.setIcon(new ImageIcon(
 							       Images.loadImage("resources/icons/stop.png")));
 		
-		botonDetener.addActionListener(new ActionListener(){
+		stopButton.addActionListener(new ActionListener(){
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -212,23 +211,23 @@ public class ToolBar extends JToolBar
 			}
 		});
 		
-		this.add(botonDetener);
+		this.add(stopButton);
 			
 	}
 	
 	
 	
-	// ICONO REINICIAR EL SIMULADOR
+	// RESET SIMULATOR ICON
 	//------------------------------------------------------------------------------
 	
-	private void IconoReiniciarSimulador(Controller controller) {
+	private void resetSimulatorIcon(Controller controller) {
 		
-		JButton botonReiniciar = new JButton();
-		botonReiniciar.setToolTipText("Resets the simulator");
-		botonReiniciar.setIcon(new ImageIcon(
+		JButton resetButton = new JButton();
+		resetButton.setToolTipText("Resets the simulator");
+		resetButton.setIcon(new ImageIcon(
 							       Images.loadImage("resources/icons/reset.png")));
 		
-		botonReiniciar.addActionListener(new ActionListener(){
+		resetButton.addActionListener(new ActionListener(){
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -238,12 +237,12 @@ public class ToolBar extends JToolBar
 			}
 		});
 		
-		this.add(botonReiniciar);
-		listaComponentes.add(botonReiniciar);
+		this.add(resetButton);
+		componentsList.add(resetButton);
 			
 	}
 	
-	// SPINNER DELAY
+	// DELAY SPINNER
 	//------------------------------------------------------------------------------
 	private void SpinnerDelay() {
 		
@@ -257,33 +256,33 @@ public class ToolBar extends JToolBar
 		
 		
 		this.add(delay);
-		listaComponentes.add(delay);
+		componentsList.add(delay);
 	}
 	
 	
 	
-	// SPINNER CON EL NUMERO DE PASOS A EJECUTAR DE UNA VEZ EN EL SIMULADOR
+	// SIMULATOR STEPS SPINNER
 	//------------------------------------------------------------------------------
 	
-	private void SpinnerPasosAEjecutar() {
+	private void simulatorStepsSpinner() {
 		
 		this.add(new JLabel(" Steps: "));
 		
-		pasos = new JSpinner(new SpinnerNumberModel(10,1,1000,1));
+		simulatorSteps = new JSpinner(new SpinnerNumberModel(10,1,1000,1));
 		
-		pasos.setToolTipText("Steps to execute: 1-1000");
-		pasos.setMaximumSize(new Dimension(70,70));
-		pasos.setMinimumSize(new Dimension(70,70));
+		simulatorSteps.setToolTipText("Steps to execute: 1-1000");
+		simulatorSteps.setMaximumSize(new Dimension(70,70));
+		simulatorSteps.setMinimumSize(new Dimension(70,70));
 		
 		
-		this.add(pasos);
-		listaComponentes.add(pasos);
+		this.add(simulatorSteps);
+		componentsList.add(simulatorSteps);
 	}
 	
-	// TEXTFIELD CON EL TIEMPO ACTUAL DE LA SIMULACION
+	// TEXTFIELD THAT INDICATES THE TIME OF THE SIMULATION
 	//------------------------------------------------------------------------------
 	
-	private void TextFieldTiempo() {
+	private void textFieldTime() {
 		
 		this.add(new JLabel(" Time: "));
 		
@@ -297,40 +296,40 @@ public class ToolBar extends JToolBar
 		
 	}
 	
-	// ICONO GENERAR INFORMES
+	// GENERATE REPORTS ICON
     //------------------------------------------------------------------------------
 	
-	private void IconoGenerarInformes(MainView mainWindow){
+	private void generateReportsIcon(MainView mainWindow){
 		
 		
-		JButton botonGeneraReports = new JButton();
-		botonGeneraReports.setToolTipText("Generate Reports");
-		botonGeneraReports.setIcon(new ImageIcon(
+		JButton generateReportsButton = new JButton();
+		generateReportsButton.setToolTipText("Generate Reports");
+		generateReportsButton.setIcon(new ImageIcon(
 								       Images.loadImage("resources/icons/report.png")));
 		
-		botonGeneraReports.addActionListener(new ActionListener() {
+		generateReportsButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				
-				mainWindow.mostrarDialofgoInformes();
+				mainWindow.showReportsDialog();
 			}
 		});
-		this.add(botonGeneraReports);	
-		listaComponentes.add(botonGeneraReports);
+		this.add(generateReportsButton);	
+		componentsList.add(generateReportsButton);
 	}
 	
-	// ICONO LIMPIAR AREA DE INFORMES
+	// CLEAR REPORTS ICON
     //-------------------------------------------------------------------------------
 	
-	private void IconoLimpiarInformes(MainView mainWindow) {
+	private void clearReportsIcon(MainView mainWindow) {
 		
 
-		JButton botonLimpiarInformes = new JButton();
-		botonLimpiarInformes.setToolTipText("Clear Reports Area");
-		botonLimpiarInformes.setIcon(new ImageIcon(
+		JButton clearReportsButton = new JButton();
+		clearReportsButton.setToolTipText("Clear Reports Area");
+		clearReportsButton.setIcon(new ImageIcon(
 							 Images.loadImage("resources/icons/delete_report.png")));
 		
-		botonLimpiarInformes.addActionListener(new ActionListener() {
+		clearReportsButton.addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -340,47 +339,47 @@ public class ToolBar extends JToolBar
 			}
 		});
 		
-		this.add(botonLimpiarInformes);
-		listaComponentes.add(botonLimpiarInformes);
+		this.add(clearReportsButton);
+		componentsList.add(clearReportsButton);
 	}
 	
-	// ICONO PARA GUARDAR LOS INFORMES
+	// SAVE REPORTS ICON
     //-------------------------------------------------------------------------------
 	
-	private void IconoGuardarInformes(MainView mainWindow) {
+	private void saveReportsIcon(MainView mainWindow) {
 		
-		JButton botonGuardarInformes = new JButton();
-		botonGuardarInformes.setToolTipText("Save Reports");
-		botonGuardarInformes.setIcon(new ImageIcon(
+		JButton saveReportsButton = new JButton();
+		saveReportsButton.setToolTipText("Save Reports");
+		saveReportsButton.setIcon(new ImageIcon(
 							 Images.loadImage("resources/icons/save_report.png")));
 		
-		botonGuardarInformes.addActionListener(new ActionListener() {
+		saveReportsButton.addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				
-				mainWindow.salvaInformes();
+				mainWindow.saveReports();
 			}
 		});
 		
-		this.add(botonGuardarInformes);
-		listaComponentes.add(botonGuardarInformes);
+		this.add(saveReportsButton);
+		componentsList.add(saveReportsButton);
 		
 		
 	}
 	
 
-	// ICONO PARA SALIR
+	// EXIT ICON
     //-------------------------------------------------------------------------------
 	
-	private void IconoSalir(MainView mainwindow) {
+	private void exitIcon(MainView mainwindow) {
 		
-		JButton botonSalir = new JButton();
-		botonSalir.setToolTipText("Exit");
-		botonSalir.setIcon(new ImageIcon(
+		JButton exitButton = new JButton();
+		exitButton.setToolTipText("Exit");
+		exitButton.setIcon(new ImageIcon(
 							 Images.loadImage("resources/icons/exit.png")));
 		
-		botonSalir.addActionListener(new ActionListener() {
+		exitButton.addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -389,61 +388,61 @@ public class ToolBar extends JToolBar
 				
 			}
 		});
-		this.add(botonSalir);
-		listaComponentes.add(botonSalir);
+		this.add(exitButton);
+		componentsList.add(exitButton);
 	}
 	
-	// Devuelve los pasos de la simulacion
-	public int getPasosSpinner() {
-		return (int) pasos.getValue();
+	
+	public int getSimulatorSteps() {
+		return (int) simulatorSteps.getValue();
 		
 	}
 	
-	// Devuelve el delay
+	
 	public int getDelay() {
 		return (int) delay.getValue();
 			
 	}
 	
-	// Devuelve el tiempo de la simulacion
-	public int getTiempo() {
+	
+	public int getSimulationTime() {
 		return Integer.parseInt(time.getText());
 	}
 	
-	// Inabilitar componentes barra de herramientas
-	public void disabled() {
-		for(JComponent comp: listaComponentes) {
+	
+	public void disableToolbarComponents() {
+		for(JComponent comp: componentsList) {
 			comp.setEnabled(false);
 		}
 	}
 	
-	// Inabilitar componentes barra de herramientas
-	public void enabled() {
-		for(JComponent comp: listaComponentes) {
+	
+	public void enableToolbarComponents() {
+		for(JComponent comp: componentsList) {
 			comp.setEnabled(true);
 		}
 	}
 	
-	// OBSERVADORES
+	// OBSERVERS
 	// -----------------------------------------------------------------------------
 	@Override
-	public void simulatorError(int tiempo, RoadMap map, List<Event> events,
+	public void simulatorError(int time, RoadMap map, List<Event> events,
 			SimulationError e) { }
 
 	@Override
-	public void advance(int tiempo, RoadMap mapa, List<Event> events) {
+	public void advance(int tim, RoadMap mapa, List<Event> events) {
 		
 		SwingUtilities.invokeLater(new Runnable() {	
 			@Override
 			public void run() {
-				time.setText(""+ tiempo);
+				time.setText(""+ tim);
 			}
 		});
 		
 	}
 
 	@Override
-	public void addEvent(int tiempo, RoadMap mapa, List<Event> events) { }
+	public void addEvent(int time, RoadMap map, List<Event> events) { }
 
 	@Override
 	public void reset(int tiempo, RoadMap mapa, List<Event> events) {

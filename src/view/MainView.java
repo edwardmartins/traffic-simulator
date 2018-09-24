@@ -324,8 +324,8 @@ public class MainView extends JFrame
 				currentFile = fichero;
 				
 				eventsEditorPanel.setTexto(s);
-				eventsEditorPanel.setBorde(currentFile.getName());
-				statusBarPanel.setMensaje("File " + fichero.getName() +
+				eventsEditorPanel.mySetBorder(currentFile.getName());
+				statusBarPanel.setMessage("File " + fichero.getName() +
 						 " of events loaded into the editor");
 				
 			}
@@ -340,7 +340,7 @@ public class MainView extends JFrame
 	
 	// SALVA UN FICHERO DEL EDITOR DE EVENTOS
 	//--------------------------------------------------------------------------------------
-	public void salvaEventos() {
+	public void saveEvents() {
 		
 		int returnVal = fileChooser.showSaveDialog(null);
 		
@@ -353,8 +353,8 @@ public class MainView extends JFrame
 				escribeFichero(fichero, eventsEditorPanel.getTexto());
 				currentFile = fichero;
 				
-				eventsEditorPanel.setBorde(currentFile.getName());
-				statusBarPanel.setMensaje("Events saved into the file " +
+				eventsEditorPanel.mySetBorder(currentFile.getName());
+				statusBarPanel.setMessage("Events saved into the file " +
 						 fichero.getName());
 				
 			}catch(IOException e) {
@@ -370,7 +370,7 @@ public class MainView extends JFrame
 	
 	// SALVA INFORMES
 	//--------------------------------------------------------------------------------------
-	public void salvaInformes() {
+	public void saveReports() {
 		
 		int returnVal = fileChooser.showSaveDialog(null);
 		
@@ -382,7 +382,7 @@ public class MainView extends JFrame
 				
 				escribeFichero(fichero, reportsPanel.getTexto());
 				
-				statusBarPanel.setMensaje("Report saved into the file " +
+				statusBarPanel.setMessage("Report saved into the file " +
 						 fichero.getName());
 				
 			}catch(IOException e) {
@@ -440,11 +440,11 @@ public class MainView extends JFrame
 			public void run() {
 				
 				int i = 0;
-				int N =  toolBar.getPasosSpinner();
+				int N =  toolBar.getSimulatorSteps();
 				int dlay = toolBar.getDelay();
 			
 				// Deshabilita los componentes
-				toolBar.disabled(); 
+				toolBar.disableToolbarComponents(); 
 				menuBar.disabledMenus();
 				
 				// Mientras la hebra no se interrumpa 
@@ -465,7 +465,7 @@ public class MainView extends JFrame
 				}
 
 				// Habilita los componentes
-				toolBar.enabled();
+				toolBar.enableToolbarComponents();
 				menuBar.enabledMenus();
 				
 		
@@ -497,42 +497,42 @@ public class MainView extends JFrame
 	
 	// Pone un mensaje en la barra de estado
 	public void setMensaje(String msg) {
-		statusBarPanel.setMensaje(msg);
+		statusBarPanel.setMessage(msg);
 	}
 	
-	public void clearAreaEventos() {
-		eventsEditorPanel.limpiarAreaDeTexto();
+	public void clearEventsArea() {
+		eventsEditorPanel.clearTextArea();
 	}
 	
 	public void clearReportsArea() {
-		reportsPanel.limpiarAreaDeTexto();;
+		reportsPanel.clearTextArea();;
 	}
 	
 	public void insertInReportsArea(String texto) {
-		reportsPanel.inserta(texto);
+		reportsPanel.insertText(texto);
 	}
 	
-	public String getTextoEditorEventos() {
+	public String getEventsEditorText() {
 		return eventsEditorPanel.getTexto();
 	}
 	
-	public void insertaEnEditorEventos(String texto) {
-		eventsEditorPanel.inserta(texto);
+	public void insertInEventsEditor(String texto) {
+		eventsEditorPanel.insertText(texto);
 	}
 	
 	// Devuelve los pasos de simulacion del spinner
 	public int getPasosSimulacion() {
-		return  toolBar.getPasosSpinner();
+		return  toolBar.getSimulatorSteps();
 	}
 	
 	// Devuelve el tiempo de simulacion 
 	public int getSimulationTime() {
-		return toolBar.getTiempo();
+		return toolBar.getSimulationTime();
 	}
 	
 	// Muestra el JDialog
-	public void mostrarDialofgoInformes() {
-		reportsDialog.mostrar();
+	public void showReportsDialog() {
+		reportsDialog.showDialog();
 	}
 	
 	// Pregunta si quieres abandonar la app

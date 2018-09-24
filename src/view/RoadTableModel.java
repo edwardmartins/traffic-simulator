@@ -13,34 +13,34 @@ import model.objects.Road;
 @SuppressWarnings("serial")
 public class RoadTableModel extends TableModel<Road>{
 
-	public RoadTableModel(String[] columnIdEventos, Controller ctrl) {
-		super(columnIdEventos, ctrl);
+	public RoadTableModel(String[] columnIdEvents, Controller ctrl) {
+		super(columnIdEvents, ctrl);
 		
 	}
 	
-	// Necesario para que se visualicen los datos
-	// --------------------------------------------------------------
-	public Object getValueAt(int indiceFil, int indiceCol) {
+	// Necesariy to visualize data
+	// -----------------------------------------------------------------------
+	public Object getValueAt(int rowIndex, int colIndex) {
 		
 		Object s = null;
-		switch (indiceCol) {
+		switch (colIndex) {
 		case 0:
-			s = this.list.get(indiceFil).getId();
+			s = this.list.get(rowIndex).getId();
 			break;
 		case 1:
-			s = this.list.get(indiceFil).getOriginJunction();
+			s = this.list.get(rowIndex).getOriginJunction();
 			break;
 		case 2:
-			s = this.list.get(indiceFil).getDestinationJunction();
+			s = this.list.get(rowIndex).getDestinationJunction();
 			break;
 		case 3:
-			s = this.list.get(indiceFil).getRoadLength();
+			s = this.list.get(rowIndex).getRoadLength();
 			break;
 		case 4:
-			s = this.list.get(indiceFil).getMaxSpeed();
+			s = this.list.get(rowIndex).getMaxSpeed();
 			break;
 		case 5:
-			s = this.list.get(indiceFil).getVehicles();
+			s = this.list.get(rowIndex).getVehicles();
 			break;
 			// default
 		default: assert (false);
@@ -48,33 +48,32 @@ public class RoadTableModel extends TableModel<Road>{
 		return s;
 	}
 
-	// Observadores
+	// OBSERVERS
 	// ----------------------------------------------------------------------------
 	@Override
-	public void simulatorError(int tiempo, RoadMap map, List<Event> events,
+	public void simulatorError(int time, RoadMap map, List<Event> events,
 			SimulationError e) {}
 
 	@Override
-	public void advance(int tiempo, RoadMap mapa, List<Event> events) {
+	public void advance(int time, RoadMap map, List<Event> events) {
 		
 		SwingUtilities.invokeLater(new Runnable() {
 			
 			@Override
 			public void run() {
-				list = mapa.getRoads(); // devuelve la lista de carreteras
-				fireTableStructureChanged(); // para repintar la estructura 
-				// (Como avisar a la vista JTable de que los elementos han cambiado)
+				list = map.getRoads(); 
+				fireTableStructureChanged();  
 			}
 		});
 		
 	}
 
 	@Override
-	public void addEvent(int tiempo, RoadMap mapa, List<Event> events) {}
+	public void addEvent(int time, RoadMap map, List<Event> events) {}
 
 	@Override
-	public void reset(int tiempo, RoadMap mapa, List<Event> events) {
-		this.list = mapa.getRoads();
+	public void reset(int time, RoadMap map, List<Event> events) {
+		this.list = map.getRoads();
 		this.fireTableStructureChanged();
 	}
 

@@ -76,7 +76,7 @@ public class MenuBar extends JMenuBar {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 			
-				mainWindow.salvaEventos();
+				mainWindow.saveEvents();
 				
 			}
 		});
@@ -92,7 +92,7 @@ public class MenuBar extends JMenuBar {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				
-				mainWindow.salvaInformes();
+				mainWindow.saveReports();
 				
 			}
 		});
@@ -173,7 +173,7 @@ public class MenuBar extends JMenuBar {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				
-				mainWindow.mostrarDialofgoInformes();
+				mainWindow.showReportsDialog();
 				
 			}
 		});

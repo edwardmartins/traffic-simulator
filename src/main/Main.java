@@ -8,9 +8,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.lang.reflect.InvocationTargetException;
-
 import javax.swing.SwingUtilities;
-
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.DefaultParser;
@@ -18,11 +16,11 @@ import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
-
 import control.Controller;
 import model.simulator.TrafficSimulator;
 import view.MainView;
 
+// Introduce -h as an argument to see help
 public class Main {
 
 	private final static Integer defaultTimeLimit = 10;
@@ -56,15 +54,16 @@ public class Main {
 		try {
 
 			CommandLine line = parser.parse(commandLineOptions, args);
+			
+			// Parse the different options
 			helpOptionParse(line, commandLineOptions);
 			modeOptionParse(line);
 			inputFileParse(line);
 			outputFileParse(line);
 			stepsOptionParse(line);
-
+			
 			// if there are some remaining arguments, then something wrong is
 			// provided in the command line!
-
 			String[] rest = line.getArgs();
 			if (rest.length > 0) {
 				String error = "Illegal arguments:";
@@ -108,6 +107,7 @@ public class Main {
 		return commandOptions;
 	}
 
+	
 	private static void helpOptionParse(CommandLine line, Options options) {
 		if (line.hasOption("h")) {
 			HelpFormatter formatter = new HelpFormatter();
@@ -115,19 +115,22 @@ public class Main {
 			System.exit(0);
 		}
 	}
-
+	
+	
 	private static void inputFileParse(CommandLine line) throws ParseException {
 		Main.inputFile = line.getOptionValue("i");
 		if (Main.inputFile == null && mode.equals(ExecutionMode.BATCH)) {
 			throw new ParseException("InputFile doesn't exist");
 		}
 	}
-
+	
+	
 	private static void outputFileParse(CommandLine line) throws ParseException {
 		if (mode.equals(ExecutionMode.BATCH))
 			Main.outputFile = line.getOptionValue("o");
 	}
-
+	
+	
 	private static void stepsOptionParse(CommandLine line) throws ParseException {
 		String t = line.getOptionValue("t", Main.defaultTimeLimit.toString());
 		
@@ -138,7 +141,8 @@ public class Main {
 			throw new ParseException("Invalid time limit");
 		}
 	}
-
+	
+	
 	private static void modeOptionParse(CommandLine line) throws ParseException {
 		String modo = line.getOptionValue("m");
 
@@ -148,7 +152,8 @@ public class Main {
 			Main.mode = ExecutionMode.GUI;
 		}
 	}
-
+	
+	
 	// Main
 	public static void main(String[] args) throws IOException, InvocationTargetException, 
 												  InterruptedException {

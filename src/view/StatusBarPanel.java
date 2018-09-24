@@ -7,7 +7,6 @@ import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
-
 import control.Controller;
 import control.Observer;
 import events.Event;
@@ -18,39 +17,36 @@ import model.map.RoadMap;
 public class StatusBarPanel extends JPanel
 							  implements Observer{
 	
-	private JLabel infoEjecucion;
+	private JLabel executionInfo;
 	
-	public StatusBarPanel(String mensaje, Controller controller) {
+	public StatusBarPanel(String message, Controller controller) {
 		
 		this.setLayout(new FlowLayout(FlowLayout.LEFT));
-		infoEjecucion = new JLabel(mensaje);
-		
-		// Añado la etiqueta al panel
-		// la etiqueta es la que va a ir mostrando el mensaje
-		this.add(infoEjecucion);
+		executionInfo = new JLabel(message);
+		this.add(executionInfo);
 		this.setBorder(BorderFactory.createBevelBorder(1));
 		controller.addObserver(this);
 	}
 	
-	//Para que la ventana principal se comunique con la barra de estado
-	public void setMensaje(String mensaje) {
-		infoEjecucion.setText(mensaje);
+	
+	public void setMessage(String message) {
+		executionInfo.setText(message);
 	}
 
-	// Observadores
+	// OBSERVERS
 	// ----------------------------------------------------------------------------
 	@Override
-	public void simulatorError(int tiempo, RoadMap map, List<Event> events,
+	public void simulatorError(int time, RoadMap map, List<Event> events,
 			SimulationError e) { }
 
 	@Override
-	public void advance(int tiempo, RoadMap mapa, List<Event> events) {
+	public void advance(int time, RoadMap map, List<Event> events) {
 		
 		SwingUtilities.invokeLater(new Runnable() {
 			
 			@Override
 			public void run() {
-				infoEjecucion.setText("Step: " + tiempo + " of the Simulator");
+				executionInfo.setText("Step: " + time + " of the Simulator");
 				
 			}
 		});
@@ -59,14 +55,14 @@ public class StatusBarPanel extends JPanel
 	}
 
 	@Override
-	public void addEvent(int tiempo, RoadMap mapa, List<Event> events) {
-		infoEjecucion.setText("Event Add to simulator");
+	public void addEvent(int time, RoadMap map, List<Event> events) {
+		executionInfo.setText("Event Added to the simulator");
 		
 	}
 
 	@Override
 	public void reset(int tiempo, RoadMap mapa, List<Event> events) {
-		infoEjecucion.setText("Simulator has been reset");
+		executionInfo.setText("Simulator has been reset");
 		
 	}
 

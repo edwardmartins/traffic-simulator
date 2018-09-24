@@ -17,7 +17,7 @@ public class EventsTableModel extends TableModel<Event> {
 		super(columnIdEvents, ctrl);
 	}
 
-	// Necessary to visualizate data
+	// Necesariy to visualize data
 	// -----------------------------------------------------------------------
 	public Object getValueAt(int rowIndex, int colIndex) {
 		Object s = null;

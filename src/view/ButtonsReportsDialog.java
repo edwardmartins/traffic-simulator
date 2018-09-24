@@ -46,7 +46,7 @@ public class ButtonsReportsDialog extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				
-				reportsDialog.ocultar();
+				reportsDialog.hideDialog();
 				
 
 			}

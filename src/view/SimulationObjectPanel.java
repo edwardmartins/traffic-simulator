@@ -6,7 +6,6 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.swing.BorderFactory;
 import javax.swing.JList;
 import javax.swing.JPanel;
@@ -14,22 +13,21 @@ import javax.swing.JScrollPane;
 import javax.swing.border.TitledBorder;
 
 @SuppressWarnings("serial")
-// Panel de objetos genericos
 public class SimulationObjectPanel<T> extends JPanel {
 
-	private ListModel<T> listModel; // Modelo de la lista con el tipo generico
-	private JList<T> objList; // El Jlist al que se le pasa el modelo de la lista
+	private ListModel<T> listModel; 
+	private JList<T> objList; 
 
-	public SimulationObjectPanel(String titulo) {
+	public SimulationObjectPanel(String title) {
 
 		this.setLayout(new GridLayout(1,1));
 		this.setBorder(BorderFactory.createTitledBorder(
 				MainView.defaultBorder,
-				titulo,
+				title,
 				TitledBorder.LEFT,
 				TitledBorder.TOP));	
 		
-		// A Jlist se le pasa como parametro el modelo de la lista
+	
 		this.listModel = new ListModel<T>();
 		this.objList = new JList<T>(this.listModel);
 
@@ -43,10 +41,9 @@ public class SimulationObjectPanel<T> extends JPanel {
 	private void addCleanSelectionListner(JList<?> list) {
 		list.addKeyListener(new KeyListener() {
 			
-			// limpiar la seleccion de items pulsando "c"
 			public void keyTyped(KeyEvent e) {
 				
-				if (e.getKeyChar() == ReportsDialog.TECLALIMPIAR)
+				if (e.getKeyChar() == ReportsDialog.CLEAR_KEY) // CLEAR_KEY = 'c'
 					list.clearSelection();
 			}
 
@@ -58,27 +55,21 @@ public class SimulationObjectPanel<T> extends JPanel {
 		});
 	}
 
-	// Recorre la lista y te devuelve los elementos seleccionados de la lista
-	// Para cada lista te devuelve, los vehiculos, cruzes o carreteras seleccionados
-	// esta implementado en dialogoInformes
-	//---------------------------------------------------------------------------
+	// Used in reports dialog to get the selected items
 	public List<T> getSelectedItems() { 
 		
-		// Lista que devuelve
-		List<T> lista = new ArrayList<>();
+		List<T> selectedIndexList = new ArrayList<>();
 		
-		// Los elementos cuyos indices han sido seleccionados los añade a la lista
-		// Get selected indices devuelve los indices seleccionados
 		for (int i : this.objList.getSelectedIndices()) {
 			
-			lista.add(listModel.getElementAt(i));
+			selectedIndexList.add(listModel.getElementAt(i));
 		}
-		return lista;
+		return selectedIndexList;
 	}
 
-	// Coloca la lista por argumento en la lista del modelo
-	public void setList(List<T> lista) {
-		this.listModel.setList(lista);
+	
+	public void setList(List<T> list) {
+		this.listModel.setList(list);
 	}
 
 }

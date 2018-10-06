@@ -187,7 +187,7 @@ public class ToolBar extends JToolBar
 	
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				mainWindow.ejecutarSimulador();
+				mainWindow.executeSimulator();
 			}		
 		});
 		this.add(executeButton);
@@ -207,7 +207,7 @@ public class ToolBar extends JToolBar
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				mainWindow.detenerSimulador();
+				mainWindow.stopSimulator();
 			}
 		});
 		

@@ -286,43 +286,38 @@ public class MainView extends JFrame
 	
 	// STATUS BAR
 	//------------------------------------------------------------------------------------
-	private void addStatusBar(JPanel panelPrincipal) {
+	private void addStatusBar(JPanel mainView) {
 		statusBarPanel = new StatusBarPanel("Welcome to the simulator !", 
 												controller);
 		
-		panelPrincipal.add(statusBarPanel, BorderLayout.PAGE_END);
+		mainView.add(statusBarPanel, BorderLayout.PAGE_END);
 	}
 	
 	
 	// TOOL BAR
 	//-------------------------------------------------------------------------------------
-	private void addToolBar(JPanel panelPrincipal) {
+	private void addToolBar(JPanel mainView) {
 		
 		toolBar = new ToolBar(this, controller);
-		panelPrincipal.add(toolBar, BorderLayout.PAGE_START);
+		mainView.add(toolBar, BorderLayout.PAGE_START);
 	}
 	
 	
-	// CARGA UN FICHERO AL EDITOR DE EVENTOS
+	// LOAD A FILE TO THE EVENTS EDITOR
 	//--------------------------------------------------------------------------------------
 	public void loadEventsFile() {
 		
 		int returnVal = fileChooser.showOpenDialog(null);
-		// si he pulsado aceptar
+		
 		if(returnVal == JFileChooser.APPROVE_OPTION) {
-			// guarda el fichero seleccionado
+			
 			File fichero = fileChooser.getSelectedFile();
 			
 			try {
 				
-				// Leo el fichero
 				String s = readFile(fichero);
-				
-				// Reinicio el controlador
 				controller.reset();
-				
 				currentFile = fichero;
-				
 				eventsEditorPanel.setTexto(s);
 				eventsEditorPanel.mySetBorder(currentFile.getName());
 				statusBarPanel.setMessage("File " + fichero.getName() +
@@ -330,7 +325,7 @@ public class MainView extends JFrame
 				
 			}
 			catch(FileNotFoundException e) {
-				muestraDialogoError("Error reading the file: " +
+				showsErrorDialog("Error reading the file: " +
 						 e.getMessage());
 			}
 			
@@ -338,7 +333,7 @@ public class MainView extends JFrame
 		
 	}
 	
-	// SALVA UN FICHERO DEL EDITOR DE EVENTOS
+	// SAVE A FILE FROM THE EVENTS EDITOR
 	//--------------------------------------------------------------------------------------
 	public void saveEvents() {
 		
@@ -346,19 +341,19 @@ public class MainView extends JFrame
 		
 		if(returnVal == JFileChooser.APPROVE_OPTION) {
 			
-			File fichero = fileChooser.getSelectedFile();
+			File file = fileChooser.getSelectedFile();
 			
 			try {
 				
-				escribeFichero(fichero, eventsEditorPanel.getTexto());
-				currentFile = fichero;
+				writeToFile(file, eventsEditorPanel.getTexto());
+				currentFile = file;
 				
 				eventsEditorPanel.mySetBorder(currentFile.getName());
 				statusBarPanel.setMessage("Events saved into the file " +
-						 fichero.getName());
+						 file.getName());
 				
 			}catch(IOException e) {
-				muestraDialogoError("Error writting the file: " +
+				showsErrorDialog("Error writting the file: " +
 						 e.getMessage());
 				
 				
@@ -368,7 +363,7 @@ public class MainView extends JFrame
 		
 	}
 	
-	// SALVA INFORMES
+	// SAVE REPORTS
 	//--------------------------------------------------------------------------------------
 	public void saveReports() {
 		
@@ -376,28 +371,29 @@ public class MainView extends JFrame
 		
 		if(returnVal == JFileChooser.APPROVE_OPTION) {
 			
-			File fichero = fileChooser.getSelectedFile();
+			File file = fileChooser.getSelectedFile();
 			
 			try {
 				
-				escribeFichero(fichero, reportsPanel.getTexto());
+				writeToFile(file, reportsPanel.getTexto());
 				
 				statusBarPanel.setMessage("Report saved into the file " +
-						 fichero.getName());
+						 file.getName());
 				
 			}catch(IOException e) {
-				muestraDialogoError("Error writting the file: " +
+				showsErrorDialog("Error writting the file: " +
 						 e.getMessage());
 			}
 		}
 			
 	}
 	
-	// 	LEE UN FICHERO DE TEXO
+	// 	READ A TEXT FILE
 	//--------------------------------------------------------------------------------------
-	private String readFile(File fichero) throws FileNotFoundException {
+	private String readFile(File file) throws FileNotFoundException {
+		
 		// Try with resources java8
-		try(BufferedReader br = new BufferedReader(new FileReader(fichero)))
+		try(BufferedReader br = new BufferedReader(new FileReader(file)))
 		{
 			String text = "";
 			String line = null;
@@ -412,9 +408,9 @@ public class MainView extends JFrame
 		}
 	}
 	
-	// 	ESCRIBE EN UN FICHERO DE TEXO
+	// 	WRITE IN A TEXT FILE
 	//--------------------------------------------------------------------------------------
-	private void escribeFichero(File fichero, String content) throws IOException{
+	private void writeToFile(File fichero, String content) throws IOException{
 		// Try with resources java8
 		// Resources are automatically closed when using try-with-resource block
 		try(BufferedWriter bw = new BufferedWriter(new FileWriter(fichero)))
@@ -425,77 +421,70 @@ public class MainView extends JFrame
 	}
 	
 
-	// 	EJECUTAR
+	// 	EXECUTE SIMULATOR
 	//--------------------------------------------------------------------------------------
 	
-	public void ejecutarSimulador() {
+	public void executeSimulator() {
 	
 		
-		if(t == null) { // Impide dar dos veces al boton
+		if(t == null) { // to press the botton one
 			
-			// Creamos un nuevo hilo para que no se ejecute en swing 
 			t = new Thread() { 
 			
-			// sobrescibimos el metodo run del nuevo hilo
 			public void run() {
 				
 				int i = 0;
 				int N =  toolBar.getSimulatorSteps();
 				int dlay = toolBar.getDelay();
 			
-				// Deshabilita los componentes
+				// Disable all the comoponents while in execution
 				toolBar.disableToolbarComponents(); 
 				menuBar.disabledMenus();
 				
-				// Mientras la hebra no se interrumpa 
 				while(!Thread.interrupted() && i < N) {
 					
 					try {
-						
 						controller.execute(1);
 						Thread.sleep(dlay);
-						
-						
+							
 					}catch(InterruptedException e) {
 						
-						Thread.currentThread().interrupt(); // Interrumpe el hilo
+						Thread.currentThread().interrupt(); 
 					};
 					
 					i++;
 				}
 
-				// Habilita los componentes
+				// Enable components when the execution is finished
 				toolBar.enableToolbarComponents();
 				menuBar.enabledMenus();
 				
 		
-				t = null; // se vuelve a poner a null para poder pulsarlo de nuevo
+				t = null; 
 			}
 			
 			};
 			
-			// Lo lanzamos
+			// start thread
 			t.start();
 		}
 	}
 	
-	// 	DETENER
+	// 	STOP SIMULATOR
 	//--------------------------------------------------------------------------------------
-	public void detenerSimulador() {
-		// Accion de detener
-		if(t!=null) {
+	public void stopSimulator() {
+		
+		if(t != null) {
 			t.interrupt();
 		}
 		
 	}
 	
 	
-	// Muestra un dialogo de error 
-	private void muestraDialogoError(String s) {
+	private void showsErrorDialog(String s) {
 		JOptionPane.showMessageDialog(this,s, "Error" , JOptionPane.ERROR_MESSAGE);
 	}
 	
-	// Pone un mensaje en la barra de estado
 	public void setMensaje(String msg) {
 		statusBarPanel.setMessage(msg);
 	}
@@ -520,35 +509,31 @@ public class MainView extends JFrame
 		eventsEditorPanel.insertText(texto);
 	}
 	
-	// Devuelve los pasos de simulacion del spinner
-	public int getPasosSimulacion() {
+	public int getStepsFromSimulator() {
 		return  toolBar.getSimulatorSteps();
 	}
 	
-	// Devuelve el tiempo de simulacion 
 	public int getSimulationTime() {
 		return toolBar.getSimulationTime();
 	}
 	
-	// Muestra el JDialog
 	public void showReportsDialog() {
 		reportsDialog.showDialog();
 	}
 	
-	// Pregunta si quieres abandonar la app
+	// ASKS IF YOU WANT TO EXIT THE APP
+	//--------------------------------------------------------------------------------------
 	public void exit() {
-		// args ( panel, mensaje, titulo, opciones, tipo de mensaje)
+		
 		int n = JOptionPane.showOptionDialog(this, "Are you sure you want to exit? ", "Exit",
 		JOptionPane.YES_NO_OPTION,
 		JOptionPane.QUESTION_MESSAGE, null, null, null);
 		
-		// El parametro "n" indica el boton seleccionado
-		// ( n == 0 -> YES, n == 1 -> NO, n == 2 -> Cancel, n == -1 -> Closed)
 		if (n == 0) System.exit(0);
 	}
 
 	
-	// OBSERVADORES
+	// OBSERVERS
 	//--------------------------------------------------------------------------------
 
 	@Override
@@ -558,7 +543,7 @@ public class MainView extends JFrame
 			
 			@Override
 			public void run() {
-				muestraDialogoError(e.getMessage());
+				showsErrorDialog(e.getMessage());
 			}
 		});
 		

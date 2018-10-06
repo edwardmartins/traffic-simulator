@@ -15,48 +15,44 @@ import control.Controller;
 @SuppressWarnings("serial")
 public class MenuBar extends JMenuBar {
 	
-	JMenu menuFicheros;
-	JMenu menuSimulador;
-	JMenu menuInformes;
+	JMenu fileMenu;
+	JMenu simulatorMenu;
+	JMenu reportsMenu;
 	
-	// CREA EL MENU
+	// CREATES MENU
 	//---------------------------------------------------------------------------
 	public MenuBar(MainView mainWindow, Controller controller) {
 		
-		// JmenuBar representa la barra entera de menu
-		// Jmenu cada desplegable de opciones
-		// JmenuItem cada opcion de cada deplegable
-		
-		super(); // Creo la barra de menu = New JMenuBar
+		super(); 
 
-		// FICHEROS
-		menuFicheros = new JMenu("Files");
-		this.add(menuFicheros);
-		creaOpcionesMenuFicheros(menuFicheros,mainWindow);
+		// FILE MENU
+		fileMenu = new JMenu("Files");
+		this.add(fileMenu);
+		createOptionsFromFileMenu(fileMenu,mainWindow);
 
-		// SIMULADOR
-		menuSimulador = new JMenu("Simulator");
-		this.add(menuSimulador);
-		creaOpcionesMenuSimulador(menuSimulador, controller, mainWindow);
+		// SIMULATOR MENU
+		simulatorMenu = new JMenu("Simulator");
+		this.add(simulatorMenu);
+		createOptionsFromSimulatorMenu(simulatorMenu, controller, mainWindow);
 
-		// INFORMES
-		menuInformes = new JMenu("Reports");
-		this.add(menuInformes);
-		creaOpcionesMenuInformes(menuInformes, mainWindow);
+		// REPORTS MENU
+		reportsMenu = new JMenu("Reports");
+		this.add(reportsMenu);
+		createOptionsFromReportsMenu(reportsMenu, mainWindow);
 		
 	}
 
-	// CREA OPCIONES DEL MENU FICHEROS ( MENU ITEMS )
+	// CREATE OPTIONS FROM FILE MENU
 	// ------------------------------------------------------------------------------
-	private void creaOpcionesMenuFicheros(JMenu menuFicheros, MainView mainWindow) {
+	private void createOptionsFromFileMenu(JMenu fileMenu, MainView mainWindow) {
 
-		// CARGAR EVENTOS
-		JMenuItem cargar = new JMenuItem("Load Events");
-		cargar.setMnemonic(KeyEvent.VK_L);
-		cargar.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_L,
+		// LOAD EVENTS
+		JMenuItem loadEvents = new JMenuItem("Load Events");
+		loadEvents.setMnemonic(KeyEvent.VK_L);
+		loadEvents.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_L,
 							  ActionEvent.ALT_MASK));
-		// accion
-		cargar.addActionListener(new ActionListener() {
+		// action
+		loadEvents.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				
@@ -65,14 +61,14 @@ public class MenuBar extends JMenuBar {
 			}
 		});
 
-		// SALVAR EVENTOS
-		JMenuItem salvar = new JMenuItem("Save Events");
-		salvar.setMnemonic(KeyEvent.VK_S);
-		salvar.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S,
+		// SAVE EVENTS
+		JMenuItem saveEvents = new JMenuItem("Save Events");
+		saveEvents.setMnemonic(KeyEvent.VK_S);
+		saveEvents.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S,
 						      ActionEvent.ALT_MASK));
 		
-		// accion
-		salvar.addActionListener(new ActionListener() {
+		// action
+		saveEvents.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 			
@@ -81,14 +77,14 @@ public class MenuBar extends JMenuBar {
 			}
 		});
 
-		// SALVAR INFORMES
-		JMenuItem salvarInformes = new JMenuItem("Save Reports");
-		salvarInformes.setMnemonic(KeyEvent.VK_R);
-		salvarInformes.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_R,
+		// SAVE REPORTS
+		JMenuItem saveReports = new JMenuItem("Save Reports");
+		saveReports.setMnemonic(KeyEvent.VK_R);
+		saveReports.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_R,
 									  ActionEvent.ALT_MASK));
 		
-		// accion
-		salvarInformes.addActionListener(new ActionListener() {
+		// action
+		saveReports.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				
@@ -98,11 +94,12 @@ public class MenuBar extends JMenuBar {
 		});
 
 		// EXIT
-		JMenuItem salir = new JMenuItem("Exit");
-		salir.setMnemonic(KeyEvent.VK_E);
-		salir.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_E, ActionEvent.ALT_MASK));
+		JMenuItem exit = new JMenuItem("Exit");
+		exit.setMnemonic(KeyEvent.VK_E);
+		exit.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_E, ActionEvent.ALT_MASK));
 		
-		salir.addActionListener(new ActionListener() {
+		// action
+		exit.addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -113,38 +110,39 @@ public class MenuBar extends JMenuBar {
 		});
 
 		
-		// Añado las opciones al menu ficheros
-		menuFicheros.add(cargar);
-		menuFicheros.addSeparator();
-		menuFicheros.add(salvar);
-		menuFicheros.addSeparator();
-		menuFicheros.add(salvarInformes);
-		menuFicheros.addSeparator();
-		menuFicheros.add(salir);
+		// Add options to menu
+		fileMenu.add(loadEvents);
+		fileMenu.addSeparator();
+		fileMenu.add(saveEvents);
+		fileMenu.addSeparator();
+		fileMenu.add(saveReports);
+		fileMenu.addSeparator();
+		fileMenu.add(exit);
 
 	}
 	
 	
-	// CREA OPCIONES DEL MENU SIMULADOR
+	// CREATE OPTIONS FROM SIMULATOR MENU
 	// ------------------------------------------------------------------------------
-	private void creaOpcionesMenuSimulador(JMenu menuSimulador, Controller controller,
+	private void createOptionsFromSimulatorMenu(JMenu simulatorMenu, Controller controller,
 										  MainView mainWindow) {
-		// EJECUTA
-		JMenuItem ejecuta = new JMenuItem("Execute");
+		// EXECUTE
+		JMenuItem execute = new JMenuItem("Execute");
 		
-		// accion
-		ejecuta.addActionListener(new ActionListener() {
+		// action
+		execute.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				
-				mainWindow.ejecutarSimulador();
+				mainWindow.executeSimulator();
 			}
 		});
 		
-		// REINICIA
-		JMenuItem reinicia = new JMenuItem("Reset");
+		// RESET
+		JMenuItem reset = new JMenuItem("Reset");
 		
-		reinicia.addActionListener(new ActionListener() {
+		// action
+		reset.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				
@@ -153,23 +151,24 @@ public class MenuBar extends JMenuBar {
 			}
 		});
 		
-		// añado las opciones al menu simulador
-		menuSimulador.add(ejecuta);
-		menuSimulador.addSeparator();
-		menuSimulador.add(reinicia);
+		// Add options to menu
+		simulatorMenu.add(execute);
+		simulatorMenu.addSeparator();
+		simulatorMenu.add(reset);
 		
 	}
 	
 	
-   // CREA OPCIONES DEL MENU INFORMES
+
+   // CREATE OPTIONS FROM REPORTS MENU
    // -------------------------------------------------------------------------------------
-	private void creaOpcionesMenuInformes(JMenu menuInformes,MainView mainWindow) {
+	private void createOptionsFromReportsMenu(JMenu reportsMenu,MainView mainWindow) {
 		
-		// GENERAR INFORMES
-		JMenuItem generaInformes = new JMenuItem("Generate");
+		// GENERATE REPORTS
+		JMenuItem generateReports = new JMenuItem("Generate Reports");
 		
-		// accion
-		generaInformes.addActionListener(new ActionListener() {
+		// action
+		generateReports.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				
@@ -178,11 +177,11 @@ public class MenuBar extends JMenuBar {
 			}
 		});
 		
-		// LIMPIAR INFORMES
-		JMenuItem limpiarInformes = new JMenuItem("Clear");
+		// CLEAR REPORTS
+		JMenuItem clearReports = new JMenuItem("Clear Reports");
 		
-		// accion
-		limpiarInformes.addActionListener(new ActionListener() {
+		// action
+		clearReports.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				
@@ -191,27 +190,27 @@ public class MenuBar extends JMenuBar {
 			}
 		});
 		
-		// añado las opciones al menu informes
-		menuInformes.add(generaInformes);
-		menuInformes.addSeparator();
-		menuInformes.add(limpiarInformes);
+		// Add options to menu
+		reportsMenu.add(generateReports);
+		reportsMenu.addSeparator();
+		reportsMenu.add(clearReports);
 		
 	}
 	
 	// DISABLED MENUS
 	// -------------------------------------------------------------------------------------
 	public void enabledMenus() {
-		menuFicheros.setEnabled(true);
-		menuSimulador.setEnabled(true);
-		menuInformes.setEnabled(true);
+		fileMenu.setEnabled(true);
+		simulatorMenu.setEnabled(true);
+		reportsMenu.setEnabled(true);
 	}
 	
 	// DISABLED MENUS
 	// -------------------------------------------------------------------------------------
 	public void disabledMenus() {
-		menuFicheros.setEnabled(false);
-		menuSimulador.setEnabled(false);
-		menuInformes.setEnabled(false);
+		fileMenu.setEnabled(false);
+		simulatorMenu.setEnabled(false);
+		reportsMenu.setEnabled(false);
 	}
 	
 	

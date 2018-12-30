@@ -35,8 +35,7 @@ public class Car extends Vehicle{
 			int totalKm = kilometrage - lastBreakDownKm; 
 			
 			// We set a random breakDownDuration
-			if(totalKm > resistance && random.nextDouble()
-										   <= breakDownProbability) {
+			if(totalKm > resistance && random.nextDouble() <= breakDownProbability) {
 				
 				setBreakdownDuration(random.nextInt(breakdownDuration) + 1);
 			}

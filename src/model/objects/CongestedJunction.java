@@ -61,8 +61,7 @@ public class CongestedJunction extends GenericJunction<EntryRoadWithInterval> {
 		else {
 			
 			for (int i = 0; i < entryRoadsList.size(); i++) {
-				if (entryRoadsList.get(i).getVehicleQueueSize() > max 
-													&& currentIndex != i) {
+				if (entryRoadsList.get(i).getVehicleQueueSize() > max && currentIndex != i) {
 					max = i;
 				}
 			}

@@ -37,12 +37,10 @@ public class CircularJunction extends GenericJunction<EntryRoadWithInterval> {
 
 				// Each time that we have had a green light a vehicle has passed
 				if (ri.getCompleteUse()) {
-					ri.setTimeInterval(Math.min(ri.getTimeInterval() + 1,
-																intervalMaxValue));
+					ri.setTimeInterval(Math.min(ri.getTimeInterval() + 1,intervalMaxValue));
 				}// No vehicle has passed when we have had a green light
 				else if (!ri.getOneVehicleUse()) {
-					ri.setTimeInterval(Math.max(ri.getTimeInterval() - 1,
-																intervalMinValue));
+					ri.setTimeInterval(Math.max(ri.getTimeInterval() - 1,intervalMinValue));
 				}
 				
 				// Update values

@@ -81,8 +81,7 @@ public class Vehicle extends SimulationObject {
 		}
 		else{ // In other case we move the vehicle to his next road
 			
-			Road nextRoad = itinerary.get(junctionCount)
-							     .getRoadToJunction(itinerary.get(junctionCount + 1));
+			Road nextRoad = itinerary.get(junctionCount).getRoadToJunction(itinerary.get(junctionCount + 1));
 			
 			if(nextRoad != null) {
 				// Update the values for the next road

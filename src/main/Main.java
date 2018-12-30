@@ -155,8 +155,7 @@ public class Main {
 	
 	
 	// Main
-	public static void main(String[] args) throws IOException, InvocationTargetException, 
-												  InterruptedException {
+	public static void main(String[] args) throws IOException, InvocationTargetException, InterruptedException {
 		Main.argumentParser(args);
 
 		if (mode.equals(ExecutionMode.BATCH))
@@ -169,8 +168,7 @@ public class Main {
 	private static void startConsoleMode() throws IOException {
 
 		InputStream is = new FileInputStream(new File(Main.inputFile));
-		OutputStream os = Main.outputFile == null ? System.out : 
-			     									new FileOutputStream(new File(Main.outputFile));
+		OutputStream os = Main.outputFile == null ? System.out : new FileOutputStream(new File(Main.outputFile));
 
 		TrafficSimulator sim = new TrafficSimulator();
 		Controller ctrl = new Controller(sim, Main.timeLimit, is, os);
@@ -186,8 +184,7 @@ public class Main {
 			throws FileNotFoundException, InvocationTargetException, InterruptedException {
 
 		TrafficSimulator sim = new TrafficSimulator();
-		OutputStream os = Main.outputFile == null ? System.out :
-													new FileOutputStream(new File(Main.outputFile));
+		OutputStream os = Main.outputFile == null ? System.out : new FileOutputStream(new File(Main.outputFile));
 		Controller ctrl = new Controller(sim, Main.timeLimit, null, os);
 
 		SwingUtilities.invokeLater(new Runnable() {

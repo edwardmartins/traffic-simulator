@@ -65,8 +65,7 @@ public class Road extends SimulationObject {
 	}
 	
 	protected int calculateBaseVelocity() {
-		int result = Math.min(maxSpeed,
-				             (maxSpeed / Math.max(vehicles.size(), 1)) + 1);
+		int result = Math.min(maxSpeed,(maxSpeed / Math.max(vehicles.size(), 1)) + 1);
 		return result;
 	}
 	
@@ -86,7 +85,7 @@ public class Road extends SimulationObject {
 		if(vehicles.size() > 0) {
 			for(int i = 0; i < vehicles.size(); i++) {
 				result += "(" + vehicles.get(i).id + ","
-							  + vehicles.get(i).getLocation() + ")";
+					      + vehicles.get(i).getLocation() + ")";
 				
 				if(!(i == vehicles.size() - 1))
 						result += ",";

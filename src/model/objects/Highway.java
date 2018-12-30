@@ -15,8 +15,7 @@ public class Highway extends Road {
 
 	@Override
 	protected int calculateBaseVelocity() {
-		int result = Math.min(maxSpeed, (maxSpeed * lanes) / 
-													 Math.max(vehicles.size(), 1) + 1);
+		int result = Math.min(maxSpeed, (maxSpeed * lanes) / Math.max(vehicles.size(), 1) + 1);
 		return result;
 	}
 
